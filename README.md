@@ -1,4 +1,4 @@
-# -Intelimetrica_Recruiting
+# Intelimetrica_Recruiting
 Quiz Back-End Developer
 
 
