@@ -89,3 +89,9 @@ Puedes utilizar el lenguaje con el que te sientas más cómodo. Sin embargo, te 
 Asimismo, te pedimos por favor nos confirmes que recibiste este correo.
 
 Quedamos atentos a cualquier duda o comentario.
+
+# Pro tipo para git
+- git merge origin/main
+- git pull --rebase origin main
+- git commit -m "Mensaje de fusión o resolución de conflictos"
+- git push origin main
