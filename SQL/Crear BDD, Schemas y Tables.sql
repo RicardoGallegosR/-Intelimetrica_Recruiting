@@ -1,19 +1,9 @@
-/*
-Creamos la BDD para ejemplificar se nombro Intelimetrica, dado que es importante el tipo de codificacion:
-
-SQL_Latin1_General_CP1: Indica que se usa el conjunto de caracteres Latin1 (que es un conjunto de caracteres de Europa Occidental). CP1 se refiere a Code Page 1252, que es una página de códigos específica para este conjunto de caracteres.
-CI: Significa Case Insensitive, lo que quiere decir que las comparaciones de caracteres no diferencian entre mayúsculas y minúsculas. Por ejemplo, 'A' y 'a' se consideran iguales.
-AI: Significa Accent Insensitive, lo que indica que las comparaciones de caracteres no diferencian entre caracteres con y sin acentos. Por ejemplo, 'a' y 'á' se consideran iguales.
-*/
 CREATE DATABASE Intelimetrica
 COLLATE SQL_Latin1_General_CP1_CI_AI;
 GO
-/*
-Se crean 3 esquemas 
-- el de activos contendra la tabla Activo y definira si un restuarante proporciona servicio o no :(
-- el esquema Restaurant contendra todo lo relacionado con los restaurantes
-- el esquema administrador es para almacenar los trigger y cosas de niños grandes :D 
-*/
+
+USE Intelimetrica;
+GO
 CREATE SCHEMA Activos;
 GO
 CREATE SCHEMA Restaurant;
@@ -21,12 +11,12 @@ GO
 CREATE SCHEMA Administrador;
 GO
 
-/*
-Creacion de la Tabla de Activos
-*/
+
+-- drop table Activos.Activo
 CREATE TABLE Activos.Activo (
-    ActivoId BIT IDENTITY(0,1) NOT NULL,
-	tipo_Activo NVARCHAR(30) NOT NULL, 
+    ActivoId TINYINT IDENTITY(0,1) NOT NULL,
+	 tipo_Activo NVARCHAR(30) NOT NULL, 
+    PRIMARY KEY (ActivoId),
 );
 
 -- Tomamos precauciones al llenar la BDD
@@ -55,18 +45,23 @@ BEGIN CATCH
 END CATCH
 
 
+CREATE TABLE Restaurant.Restaurants (
+   RestaurantsId INT IDENTITY(0,1) NOT NULL,
+   Id UNIQUEIDENTIFIER DEFAULT NEWID() NOT NULL,
+   Rating TINYINT CHECK (Rating BETWEEN 0 AND 4),
+   [Name] VARCHAR(40), -- Name of the restaurant
+   WebSite VARCHAR(40), -- Url of the restaurant
+   email VARCHAR(45),
+   phone VARCHAR(15), -- por los numeros internacionales,10 para los nacionales
+   street VARCHAR(35),
+   city VARCHAR(50),
+   [State] VARCHAR(30),
+   lat FLOAT, 
+   lng FLOAT,
+   ActivoId INT DEFAULT 1,
+   PRIMARY KEY (RestaurantsId) 
+);
 
-
-
-Restaurants (
-id TEXT PRIMARY KEY, -- Unique Identifier of Restaurant
-            rating INTEGER, -- Number between 0 and 4
-            name TEXT, -- Name of the restaurant
-            site TEXT, -- Url of the restaurant
-            email TEXT,
-            phone TEXT,
-            street TEXT,
-            city TEXT,
-            state TEXT,
-            lat FLOAT, -- Latitude
-            lng FLOAT) -- Longitude
+ALTER TABLE Restaurant.Restaurants
+ADD CONSTRAINT FK_Activos_Restaurants
+FOREIGN KEY (ActivoId) REFERENCES Examples.Activo.Activos(ActivoId);
